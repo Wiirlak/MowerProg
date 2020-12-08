@@ -1,0 +1,7 @@
+target/
+project/target
+project/project/target
+.bsp
+.idea/*.iws
+.idea/workspace.xml
+.idea/tasks.xml
