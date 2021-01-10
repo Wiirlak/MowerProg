@@ -18,4 +18,10 @@ class HelloSpec extends AnyFunSuite {
     assertThrows[java.lang.StringIndexOutOfBoundsException]("Hello" (6))
   }
 
+  test(
+    "A wrong character should throw an Exception"
+  ) {
+
+  }
+
 }

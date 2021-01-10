@@ -1,62 +1,62 @@
 package projetal2020
 import play.api.libs.json._
+import scala.annotation.tailrec
 
-import scala.collection.mutable.ListBuffer
-
-//@SuppressWarnings(Array("org.wartremover.warts.NonUnitStatements")) // todo: remove that shit
 class MowerManager(
-    val mowers: ListBuffer[Mower]
+    val mowers: List[Mower],
+    val land: Land
 ) {
-
-  val end_mowers: ListBuffer[(Int, Int, Char)] = run()
   show_output()
 
-  def run(): ListBuffer[(Int, Int, Char)] = {
-    mowers.map(x => x.move_it())
+  def run_mower(): String = {
+    @tailrec
+    def run_one(rest: List[Mower], res: String): String = {
+      rest match {
+        case Nil => res
+        case head :: tail => {
+          val end = head.move_it()
+          val json: JsValue = Json.parse(
+            s"""
+               |\t\t\t{
+               |\t\t\t\t"debut": {
+               |\t\t\t\t\t"point": {
+               |\t\t\t\t\t\t"x": ${head.start_x.toString},
+               |\t\t\t\t\t\t"y": ${head.start_y.toString}
+               |\t\t\t\t\t},
+               |\t\t\t\t\t"direction": "${head.start_direction.toString}"
+               |\t\t\t\t},
+               |\t\t\t\t"instructions": ["${head.sequence
+                 .split("")
+                 .mkString("\", \"")}"],
+               |\t\t\t\t"fin": {
+               |\t\t\t\t\t"point": {
+               |\t\t\t\t\t\t"x": ${end._1.toString},
+               |\t\t\t\t\t\t"y": ${end._2.toString}
+               |\t\t\t\t\t},
+               |\t\t\t\t\t"direction": "${end._3.toString}"
+               |\t\t\t\t}
+               |\t\t\t}
+               |""".stripMargin
+          )
+          run_one(tail, List(res, json.toString()).mkString(","))
+        }
+      }
+    }
+    run_one(mowers, "")
   }
 
   def show_output(): Unit = {
-    val susu: Int = 5
     val json: JsValue = Json.parse(s"""
          |{
          |\t"limite": {
-         |\t\t"x": ${susu.toString},
-         |\t\t"y": 5
+         |\t\t"x": ${land.size_x.toString},
+         |\t\t"y": ${land.size_y.toString}
          |\t},
-         |\t"tondeuses": [${mowerToString()}]
+         |\t"tondeuses": [${run_mower().substring(1)}]
          |}
          |""".stripMargin)
-    println(json)
+    println(Json.prettyPrint(json))
   }
-
-  def mowerToString(): String = {
-    val res = mowers.map(
-      x =>
-        s"""
-        |\t\t\t{
-        |\t\t\t\t"debut": {
-        |\t\t\t\t\t"point": {
-        |\t\t\t\t\t\t"x": ${x.start_x.toString},
-        |\t\t\t\t\t\t"y": ${x.start_y.toString}
-        |\t\t\t\t\t},
-        |\t\t\t\t\t"direction": "${x.start_direction.toString}"
-        |\t\t\t\t},
-        |\t\t\t\t"instructions": ["${x.sequence
-             .split("")
-             .mkString("\", \"")}"],
-        |\t\t\t\t"fin": {
-        |\t\t\t\t\t"point": {
-        |\t\t\t\t\t\t"x": ${x.start_x.toString},
-        |\t\t\t\t\t\t"y": ${x.start_y.toString}
-        |\t\t\t\t\t},
-        |\t\t\t\t\t"direction": "${x.start_direction.toString}"
-        |\t\t\t\t}
-        |\t\t\t}
-        |""".stripMargin
-    )
-    res.mkString(",")
-  }
-
 }
 
 /* todo : clean at the end
@@ -109,3 +109,26 @@ class MowerManager(
 //      )
 //    )
  */
+//val json: JsValue = Json.parse(
+//s"""
+//               |\t\t\t{
+//               |\t\t\t\t"debut": {
+//               |\t\t\t\t\t"point": {
+//               |\t\t\t\t\t\t"x": ${head.start_x.toString},
+//               |\t\t\t\t\t\t"y": ${head.start_y.toString}
+//               |\t\t\t\t\t},
+//               |\t\t\t\t\t"direction": "${head.start_direction.toString}"
+//               |\t\t\t\t},
+//               |\t\t\t\t"instructions": ["${head.sequence
+//.split("")
+//.mkString("\", \"")}"],
+//               |\t\t\t\t"fin": {
+//               |\t\t\t\t\t"point": {
+//               |\t\t\t\t\t\t"x": ${end._1.toString},
+//               |\t\t\t\t\t\t"y": ${end._2.toString}
+//               |\t\t\t\t\t},
+//               |\t\t\t\t\t"direction": "${end._3.toString}"
+//               |\t\t\t\t}
+//               |\t\t\t}
+//               |""".stripMargin
+//)

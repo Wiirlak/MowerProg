@@ -14,8 +14,8 @@ object Main extends App {
   val parser = new Parser()
   val land = parser.get_land_from_list(content)
   val mowers = parser.get_mowers_from_list(content, land)
-  val mowm = new MowerManager(mowers)
-  print(mowers)
+  val mowm = new MowerManager(mowers.toList, land)
+//  print(mowers)
 
   // Le code suivant ne compilera pas.
   // var tmp = null;
