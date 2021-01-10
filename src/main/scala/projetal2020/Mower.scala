@@ -29,7 +29,7 @@ class Mower(
 
 //  println(move_it(sequence))
 
-  def move_it(str: String): (Int, Int, Char) = {
+  def move_it(): (Int, Int, Char) = {
     @tailrec
     def move(
         element: List[Char],
@@ -44,7 +44,7 @@ class Mower(
           val (l, m, n) = make_it_move(current_x, current_y, direction, head)
           move(tail, head :: result, l, m, n)
       }
-    move(str.toList, Nil, start_x, start_y, start_direction)
+    move(sequence.toList, Nil, start_x, start_y, start_direction)
   }
 
   def make_it_move(

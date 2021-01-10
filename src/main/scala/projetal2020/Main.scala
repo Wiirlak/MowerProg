@@ -10,11 +10,12 @@ object Main extends App {
 //  val error_direction = new Mower(3, 3, 'M', "AAA", land)
   val file_reader: FileReader = new FileReader()
   val content =
-    file_reader.get_file_content("D:\\Ecole\\5AL\\Scalla\\Cours\\ok.txt")
+    file_reader.get_file_content("./ok.txt")
   val parser = new Parser()
   val land = parser.get_land_from_list(content)
-  val mower = parser.get_mower_from_list(content, land)
-  print(mower)
+  val mowers = parser.get_mowers_from_list(content, land)
+  val mowm = new MowerManager(mowers)
+  print(mowers)
 
   // Le code suivant ne compilera pas.
   // var tmp = null;

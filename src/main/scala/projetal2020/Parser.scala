@@ -11,7 +11,7 @@ class Parser {
     new Land(size_x, size_y)
   }
 
-  def get_mower_from_list(
+  def get_mowers_from_list(
       mower_list: List[String],
       land: Land
   ): ListBuffer[Mower] = {
