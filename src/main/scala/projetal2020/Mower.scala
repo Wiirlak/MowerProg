@@ -6,12 +6,17 @@ class Mower(
     val start_y: Int,
     val start_direction: Char,
     val sequence: String
-) {
+) extends Land(5, 5) {
 
   println("New mower")
   print_current()
 
-//  make_it_move(start_direction, sequence(0))
+  // TODO : Erreur pour verif la chaine -> throw? how ?
+//  if (! sequence.matches("^[A,D,G]*$")) {
+//    throw DonneesIncorrectesException("Error")
+//  }
+
+  //  make_it_move(start_direction, sequence(0))
   println(move_it( /*start_x, start_y, start_direction,*/ sequence))
 
   def move_it(str: String): (Int, Int, Char) = {
@@ -30,7 +35,6 @@ class Mower(
           move(tail, head :: result, l, m, n)
       }
     move(str.toList, Nil, start_x, start_y, start_direction)
-
   }
 
   def make_it_move(
@@ -42,33 +46,41 @@ class Mower(
     case 'N' =>
       movement match {
         case 'G' => (current_x, current_y, 'W')
-        case 'A' => (current_x, current_y + 1, direction)
         case 'D' => (current_x, current_y, 'E')
-//        case _   => println("error")
+        case 'A' =>
+          if (current_y < size_y) (current_x, current_y + 1, direction)
+          else (current_x, current_y, direction) //TODO: error here or nah
+//        case _   => println("error") //TODO: error here
       }
 
     case 'W' =>
       movement match {
         case 'G' => (current_x, current_y, 'S')
-        case 'A' => (current_x - 1, current_y, direction)
         case 'D' => (current_x, current_y, 'N')
-//        case _   => println("error")
+        case 'A' =>
+          if (current_y > 0) (current_x - 1, current_y, direction)
+          else (current_x, current_y, direction) //TODO: error here
+        //        case _   => println("error") //TODO: error here
       }
 
     case 'E' =>
       movement match {
         case 'G' => (current_x, current_y, 'N')
-        case 'A' => (current_x + 1, current_y, direction)
         case 'D' => (current_x, current_y, 'S')
-//        case _   => println("error")
+        case 'A' =>
+          if (current_x < size_x) (current_x + 1, current_y, direction)
+          else (current_x, current_y, direction) //TODO: error here
+        //        case _   => println("error") //TODO: error here
       }
 
     case 'S' =>
       movement match {
         case 'G' => (current_x, current_y, 'E')
-        case 'A' => (current_x, current_y - 1, direction)
         case 'D' => (current_x, current_y, 'W')
-//        case _   => println("error")
+        case 'A' =>
+          if (current_y > 0) (current_x, current_y - 1, direction)
+          else (current_x, current_y, direction) //TODO: error here
+        //        case _   => println("error") //TODO: error here
       }
 
 //    case _ => println("error")

@@ -3,7 +3,7 @@ package projetal2020
 object Main extends App {
   println("Ici le principal")
 
-  val t = new Mower(1, 2, 'N', "GAGAGAGAA")
+  val t = new Mower(1, 2, 'N', "PGAGAGAGAA")
 
   // Le code suivant ne compilera pas.
   // var tmp = null;
