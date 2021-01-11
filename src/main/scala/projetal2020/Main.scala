@@ -8,13 +8,13 @@ object Main extends App {
 //  val x = new Mower(3, 3, 'E', "AAA", land)
 ////  val error_sequence = new Mower(3, 3, 'E', "PPAAA", land)
 //  val error_direction = new Mower(3, 3, 'M', "AAA", land)
-  val file_reader: FileReader = new FileReader()
-  val content =
-    file_reader.get_file_content("./ok.txt")
-  val parser = new Parser()
-  val land = parser.get_land_from_list(content)
-  val mowers = parser.get_mowers_from_list(content, land)
-  val mowm = new MowerManager(mowers.toList, land)
+  val content: List[String] = FileReader.get_file_content("./ok.txt")
+  val land: Land = Parser.get_land_from_list(content)
+  val mowers: List[Mower] = Parser.get_mowers_from_list(content, land)
+  val mowm = new MowerManager(mowers, land)
+  val mowerEndedList = mowm.run_all_mowers()
+
+  println(Jsonner.runToJson(land, mowerEndedList))
 //  print(mowers)
 
   // Le code suivant ne compilera pas.

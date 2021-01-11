@@ -1,6 +1,6 @@
 package projetal2020
 
-class FileReader {
+object FileReader {
   import better.files._
 
   def get_file_content(path: String): List[String] = {

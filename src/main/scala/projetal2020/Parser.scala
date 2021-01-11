@@ -1,8 +1,8 @@
 package projetal2020
 
-import scala.collection.mutable.ListBuffer
+import scala.annotation.tailrec
 
-class Parser {
+object Parser {
 
   def get_land_from_list(land_list: List[String]): Land = {
     val land_data = land_list(0).split(" ")
@@ -14,15 +14,29 @@ class Parser {
   def get_mowers_from_list(
       mower_list: List[String],
       land: Land
-  ): ListBuffer[Mower] = {
-    val mowers = new ListBuffer[Mower]()
-    for (i <- 1 until mower_list.size by 2) {
-      val r = mower_list(i).split(" ")
-      val x = r(0).toInt
-      val y = r(1).toInt
-      val dir = r(2).charAt(0)
-      mowers += new Mower(x, y, dir, mower_list(i + 1), land)
+  ): List[Mower] = {
+
+    // TODO gerer les erreurs d'input
+    @tailrec
+    def append(
+        mower_list: List[String],
+        land: Land,
+        mowers_acc: List[Mower]
+    ): List[Mower] = mower_list match {
+      case Nil => mowers_acc
+      case head :: tail => {
+        val r = head.split(" ")
+        val x = r(0).toInt
+        val y = r(1).toInt
+        val dir = r(2).charAt(0)
+        append(
+          tail.drop(1),
+          land,
+          mowers_acc :+ new Mower(Coordinates(x, y, dir), tail(0), land)
+        )
+      }
     }
-    mowers
+
+    append(mower_list.drop(1), land, List())
   }
 }
