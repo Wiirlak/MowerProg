@@ -49,7 +49,7 @@ class Mower(
         case 'G' => Coordinates(current_x, current_y, 'S')
         case 'D' => Coordinates(current_x, current_y, 'N')
         case 'A' =>
-          if (current_y > 0) Coordinates(current_x - 1, current_y, direction)
+          if (current_x > 0) Coordinates(current_x - 1, current_y, direction)
           else Coordinates(current_x, current_y, direction)
       }
 
