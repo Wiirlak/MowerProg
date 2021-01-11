@@ -1,3 +1,3 @@
 package projetal2020
 
-class Land(val size_x: Int, val size_y: Int) {}
+case class Land(size_x: Int, size_y: Int) {}

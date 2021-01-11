@@ -1,9 +1,9 @@
 package projetal2020
 import scala.annotation.tailrec
 
-class MowerManager(
-    val mowers: List[Mower],
-    val land: Land
+case class MowerManager(
+    mowers: List[Mower],
+    land: Land
 ) {
 
   def run_all_mowers(): List[MowerEnded] = {

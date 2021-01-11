@@ -18,9 +18,7 @@ class Mower(
         case Nil => coordinates
         case head :: tail =>
           val new_coordinates: Coordinates = move(
-            coordinates.x,
-            coordinates.y,
-            coordinates.direction,
+            coordinates,
             head
           )
           action(tail, head :: result, new_coordinates)
@@ -29,47 +27,47 @@ class Mower(
   }
 
   def move(
-      current_x: Int,
-      current_y: Int,
-      direction: Char,
+      coordinates: Coordinates,
       movement: Char
-  ): Coordinates = direction match {
+  ): Coordinates = coordinates.direction match {
     case 'N' =>
       movement match {
-        case 'G' => Coordinates(current_x, current_y, 'W')
-        case 'D' => Coordinates(current_x, current_y, 'E')
+        case 'G' => Coordinates(coordinates.x, coordinates.y, 'W')
+        case 'D' => Coordinates(coordinates.x, coordinates.y, 'E')
         case 'A' =>
-          if (current_y < this.land.size_y)
-            Coordinates(current_x, current_y + 1, direction)
-          else Coordinates(current_x, current_y, direction)
+          if (coordinates.y < this.land.size_y)
+            Coordinates(coordinates.x, coordinates.y + 1, coordinates.direction)
+          else Coordinates(coordinates.x, coordinates.y, coordinates.direction)
       }
 
     case 'W' =>
       movement match {
-        case 'G' => Coordinates(current_x, current_y, 'S')
-        case 'D' => Coordinates(current_x, current_y, 'N')
+        case 'G' => Coordinates(coordinates.x, coordinates.y, 'S')
+        case 'D' => Coordinates(coordinates.x, coordinates.y, 'N')
         case 'A' =>
-          if (current_x > 0) Coordinates(current_x - 1, current_y, direction)
-          else Coordinates(current_x, current_y, direction)
+          if (coordinates.x > 0)
+            Coordinates(coordinates.x - 1, coordinates.y, coordinates.direction)
+          else Coordinates(coordinates.x, coordinates.y, coordinates.direction)
       }
 
     case 'E' =>
       movement match {
-        case 'G' => Coordinates(current_x, current_y, 'N')
-        case 'D' => Coordinates(current_x, current_y, 'S')
+        case 'G' => Coordinates(coordinates.x, coordinates.y, 'N')
+        case 'D' => Coordinates(coordinates.x, coordinates.y, 'S')
         case 'A' =>
-          if (current_x < this.land.size_x)
-            Coordinates(current_x + 1, current_y, direction)
-          else Coordinates(current_x, current_y, direction)
+          if (coordinates.x < this.land.size_x)
+            Coordinates(coordinates.x + 1, coordinates.y, coordinates.direction)
+          else Coordinates(coordinates.x, coordinates.y, coordinates.direction)
       }
 
     case 'S' =>
       movement match {
-        case 'G' => Coordinates(current_x, current_y, 'E')
-        case 'D' => Coordinates(current_x, current_y, 'W')
+        case 'G' => Coordinates(coordinates.x, coordinates.y, 'E')
+        case 'D' => Coordinates(coordinates.x, coordinates.y, 'W')
         case 'A' =>
-          if (current_y > 0) Coordinates(current_x, current_y - 1, direction)
-          else Coordinates(current_x, current_y, direction)
+          if (coordinates.y > 0)
+            Coordinates(coordinates.x, coordinates.y - 1, coordinates.direction)
+          else Coordinates(coordinates.x, coordinates.y, coordinates.direction)
       }
   }
 }
