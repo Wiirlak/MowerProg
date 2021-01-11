@@ -18,7 +18,7 @@ class MowerManager(
           head.land,
           head.sequence,
           head.start_coordinates,
-          head.move_it()
+          head.run_sequence()
         )
         run_one_mower(tail, mowerEndedAcc :+ mowerEnded)
     }

@@ -1,30 +1,15 @@
 package projetal2020
 import scala.annotation.tailrec
 
-@SuppressWarnings(Array("org.wartremover.warts.Throw"))
 class Mower(
     val start_coordinates: Coordinates,
     val sequence: String,
     val land: Land
 ) {
 
-  if (!sequence.matches("^[A,D,G]*$")) {
-    throw DonneesIncorrectesException(
-      "Error on sequence. Should be in [G, D, A]"
-    )
-  }
-
-  if (!"NEWS".contains(start_coordinates.direction)) {
-    throw DonneesIncorrectesException(
-      "Error on start position. Should be [N, E, W, S]"
-    )
-  }
-
-  //TODO: starting pos x et y < 0
-
-  def move_it(): Coordinates = {
+  def run_sequence(): Coordinates = {
     @tailrec
-    def move(
+    def action(
         element: List[Char],
         result: List[Char],
         coordinates: Coordinates
@@ -32,18 +17,18 @@ class Mower(
       element match {
         case Nil => coordinates
         case head :: tail =>
-          val new_coordinates: Coordinates = make_it_move(
+          val new_coordinates: Coordinates = move(
             coordinates.x,
             coordinates.y,
             coordinates.direction,
             head
           )
-          move(tail, head :: result, new_coordinates)
+          action(tail, head :: result, new_coordinates)
       }
-    move(sequence.toList, Nil, start_coordinates)
+    action(sequence.toList, Nil, start_coordinates)
   }
 
-  def make_it_move(
+  def move(
       current_x: Int,
       current_y: Int,
       direction: Char,
@@ -56,7 +41,7 @@ class Mower(
         case 'A' =>
           if (current_y < this.land.size_y)
             Coordinates(current_x, current_y + 1, direction)
-          else Coordinates(current_x, current_y, direction) //TODO: error here
+          else Coordinates(current_x, current_y, direction)
       }
 
     case 'W' =>
@@ -65,7 +50,7 @@ class Mower(
         case 'D' => Coordinates(current_x, current_y, 'N')
         case 'A' =>
           if (current_y > 0) Coordinates(current_x - 1, current_y, direction)
-          else Coordinates(current_x, current_y, direction) //TODO: error here
+          else Coordinates(current_x, current_y, direction)
       }
 
     case 'E' =>
@@ -75,7 +60,7 @@ class Mower(
         case 'A' =>
           if (current_x < this.land.size_x)
             Coordinates(current_x + 1, current_y, direction)
-          else Coordinates(current_x, current_y, direction) //TODO: error here
+          else Coordinates(current_x, current_y, direction)
       }
 
     case 'S' =>
@@ -84,7 +69,7 @@ class Mower(
         case 'D' => Coordinates(current_x, current_y, 'W')
         case 'A' =>
           if (current_y > 0) Coordinates(current_x, current_y - 1, direction)
-          else Coordinates(current_x, current_y, direction) //TODO: error here
+          else Coordinates(current_x, current_y, direction)
       }
   }
 }

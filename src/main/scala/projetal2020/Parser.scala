@@ -24,19 +24,40 @@ object Parser {
         mowers_acc: List[Mower]
     ): List[Mower] = mower_list match {
       case Nil => mowers_acc
-      case head :: tail => {
-        val r = head.split(" ")
-        val x = r(0).toInt
-        val y = r(1).toInt
-        val dir = r(2).charAt(0)
+      case head :: tail =>
+        val row = head.split(" ")
+        val x = row(0).toInt
+        val y = row(1).toInt
+        val dir = row(2).charAt(0)
+
+        check_values(Coordinates(x, y, dir), tail(0))
+
         append(
           tail.drop(1),
           land,
           mowers_acc :+ new Mower(Coordinates(x, y, dir), tail(0), land)
         )
-      }
     }
 
     append(mower_list.drop(1), land, List())
+  }
+
+  @SuppressWarnings(Array("org.wartremover.warts.Throw"))
+  def check_values(coordinates: Coordinates, sequence: String): Unit = {
+    if (!sequence.matches("^[A,D,G]*$")) {
+      throw DonneesIncorrectesException(
+        "Error on sequence. It should be within [G, D, A]"
+      )
+    }
+    if (!"NEWS".contains(coordinates.direction)) {
+      throw DonneesIncorrectesException(
+        "Error on start position. It should be within [N, E, W, S]"
+      )
+    }
+    if (coordinates.x < 0 || coordinates.y < 0) {
+      throw DonneesIncorrectesException(
+        "Error on start position. Mower should start x and y > 0"
+      )
+    }
   }
 }

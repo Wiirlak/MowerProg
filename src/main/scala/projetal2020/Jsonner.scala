@@ -38,10 +38,12 @@ object Jsonner {
     )
   }
 
-  def runToJson(land: Land, mowersList: List[MowerEnded]): JsObject = {
-    Json.obj(
-      "limite"    -> landToJson(land),
-      "tondeuses" -> mowersListToJson(mowersList)
+  def runToJson(land: Land, mowersList: List[MowerEnded]): String = {
+    Json.prettyPrint(
+      Json.obj(
+        "limite"    -> landToJson(land),
+        "tondeuses" -> mowersListToJson(mowersList)
+      )
     )
   }
 }
